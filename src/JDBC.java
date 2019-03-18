@@ -141,7 +141,69 @@ public class JDBC {
     }
   }
 
-  public static void fillTable() {
+  public static String generatedDate() {
+    Random random = new Random();
+String[] arrDay = new String[30];
+arrDay[0] = "01";
+arrDay[1] = "02";
+arrDay[2] = "03";
+arrDay[3] = "04";
+arrDay[4] = "05";
+arrDay[5] = "06";
+arrDay[6] = "07";
+arrDay[7] = "08";
+arrDay[8] = "09";
 
+    for (int i = 9; i < 30; i++) {
+      String s = "" + i;
+arrDay[i] = s;
+}
+    String[] arrMonth = {"01", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};//11
+String[] arrYear = {"1985", "1990", "1989", "1999"};//4
+String date = arrYear[random.nextInt(4)] + "-" + arrMonth[random.nextInt(11)] + "-"
++ arrDay[random.nextInt(30)];
+    return date;
+}
+
+  public static void fillTableUsers() {
+
+    Random random = new Random();
+String[] arrName = {"Rob", "Bob", "Peet", "Jack", "Sara",
+"Salli", "Bill", "Kate", "Lola", "Tor", "Mike", "Bred", "Donald", "Monika", "Glen",};//15
+String[] arrSurname = {"Smith", "Johnson", "Williams", "Jones", "Brown", "Davis",
+"Miller", "Wilson", "Moore", "Taylor", "Anderson", "Thomas", "Jackson", "White",
+"Harris"};//15
+
+Connection connection = null;
+Statement statement = null;
+    try {
+      connection = DriverManager.getConnection(Main.URL, Main.USERNAME, Main.PASSWORD);
+statement = connection.createStatement();
+      for (int i = 0; i < 1001; i++) {
+        String qery = "insert into vepamke.users (name, surname, birthdate) "
++ "values (" + "\'" + arrName[random.nextInt(15)] + "\'" + ", " + "\'" +
+            arrSurname[random.nextInt(15)] + "\'" + ", " + "\'" + generatedDate() + "\'" + ")";
+statement.execute(qery);
+}
+
+      System.out.println("Table users is filled!");
+} catch (SQLException e) {
+      System.out.println(e.getMessage());
+} finally {
+      if (statement != null) {
+        try {
+          statement.close();
+} catch (SQLException e) {
+          e.printStackTrace();
+}
+      }
+      if (connection != null) {
+        try {
+          connection.close();
+} catch (SQLException e) {
+          e.printStackTrace();
+}
+      }
+    }
   }
 }
